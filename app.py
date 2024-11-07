@@ -70,7 +70,7 @@ def get_va_tasks():
     }
     return jsonify(tasks)
 
-@app.route('/api/post-ideas', methods=["GET", "POST"])
+@app.route('/api/post-ideas', methods=["GET", "POST"]) # Test
 def get_post_ideas():
     ideas = {
         "post_ideas": [
