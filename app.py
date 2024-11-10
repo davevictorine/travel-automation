@@ -72,6 +72,12 @@ def get_va_tasks():
 
 @app.route('/api/post-ideas', methods=["GET", "POST"]) # Test
 def get_post_ideas():
+    if request.method == "POST":
+       new_idea = request.json
+       print(new_idea)
+    else:
+        # Your existing GET logic should go here
+    
     ideas = {
         "post_ideas": [
             {
