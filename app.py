@@ -2,6 +2,29 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
+ideas = {    # This line and everything after needs to be indented!
+            "post_ideas": [
+                {
+                    "title": "Best Oklahoma Towns to Visit in December",
+                    "keyword": "Best Places to Visit in December",
+                    "kd": 3,
+                    "volume": 1200
+                },
+                {
+                    "title": "Where to See Christmas Lights in Tulsa",
+                    "keyword": "Christmas Lights Near Me",
+                    "kd": 4,
+                    "volume": 34000
+                },
+                {
+                    "title": "Christmas Events in Missouri",
+                    "keyword": "Christmas Events Near Me",
+                    "kd": 1,
+                    "volume": 26000
+                }
+            ]
+        }
+
 @app.route('/api/blog-stats')
 def get_blog_stats():
     stats = {
@@ -72,34 +95,31 @@ def get_va_tasks():
 
 @app.route('/api/post-ideas', methods=["GET", "POST"]) # Test
 def get_post_ideas():
+    global ideas
     if request.method == "POST":
         # Get the new idea from the request
         new_idea = request.json
+
+        # TODO: 
+        # 1. Check if any existing idea has the same title
+        # 2. If it's a duplicate, return an error message
+        # 3. If it's not a duplicate, append it
+
+
+        ideas["post_ideas"].append(new_idea)
+
+        # Recalculate metrics
+        total_ideas = len(ideas["post_ideas"])
+        total_kd = 0
+        total_volume = 0
+
+
+
+
         print("New idea received:", new_idea)
         return jsonify({"message": "Received your post!"})
     else:
-        ideas = {    # This line and everything after needs to be indented!
-            "post_ideas": [
-                {
-                    "title": "Best Oklahoma Towns to Visit in December",
-                    "keyword": "Best Places to Visit in December",
-                    "kd": 3,
-                    "volume": 1200
-                },
-                {
-                    "title": "Where to See Christmas Lights in Tulsa",
-                    "keyword": "Christmas Lights Near Me",
-                    "kd": 4,
-                    "volume": 34000
-                },
-                {
-                    "title": "Christmas Events in Missouri",
-                    "keyword": "Christmas Events Near Me",
-                    "kd": 1,
-                    "volume": 26000
-                }
-            ]
-        }
+         # GET Logic
 
         # Calculate total number of ideas
         total_ideas = len(ideas["post_ideas"])
