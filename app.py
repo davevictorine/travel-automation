@@ -100,53 +100,21 @@ def get_post_ideas():
         # Get the new idea from the request
         new_idea = request.json
 
-        # TODO: 
-        # 1. Check if any existing idea has the same title
-        # 2. If it's a duplicate, return an error message
-        # 3. If it's not a duplicate, append it
-
-
-        ideas["post_ideas"].append(new_idea)
-
-        # Recalculate metrics
-        total_ideas = len(ideas["post_ideas"])
-        total_kd = 0
-        total_volume = 0
-
-
-
-
-        print("New idea received:", new_idea)
-        return jsonify({"message": "Received your post!"})
-    else:
-         # GET Logic
-
-        # Calculate total number of ideas
-        total_ideas = len(ideas["post_ideas"])
+          # Add this variable to track if we found a duplicate
+        is_duplicate = False
         
-        # Initialize variables for calculations
-        total_kd = 0
-        total_volume = 0
-        
-        # Loop through ideas to sum up values
+        # Check each existing idea
         for idea in ideas["post_ideas"]:
-            total_kd += idea["kd"]
-            total_volume += idea["volume"]
+            if idea["title"] == new_idea["title"]:
+                is_duplicate = True
+                break  # Exit the loop if we found a match
         
-        # Calculate averages
-        avg_kd = total_kd / total_ideas
-
-        # Create metrics dictionary
-        metrics = {
-            "total_ideas": total_ideas,
-            "average_kd": round(avg_kd, 1),
-            "total_search_volume": total_volume
-        }
-
-        # Add metrics to our response
-        ideas["metrics"] = metrics
-
-        return jsonify(ideas)
+        # Now AFTER the loop, decide what to do
+        if is_duplicate:
+            return jsonify({"message": "This idea already exists!"})
+        else:
+            ideas["post_ideas"].append(new_idea)
+            return jsonify({"message": "New idea added successfully"})
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
