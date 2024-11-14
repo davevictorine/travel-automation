@@ -115,6 +115,9 @@ def get_post_ideas():
         else:
             ideas["post_ideas"].append(new_idea)
             return jsonify({"message": "New idea added successfully"})
-
+    else:
+        # Sorting logic for GET
+        top_ideas = sorted(ideas["post_idease"], key=lambda x: (x["kd"], -x["volume"]))
+        return jsonify({"post_ideas": top_ideas})
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
